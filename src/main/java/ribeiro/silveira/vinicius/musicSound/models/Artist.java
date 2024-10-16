@@ -13,7 +13,7 @@ public class Artist {
 
     public Artist(String name, Genre genre, List<Music> musics) {
         this.name = name;
-        this.genre = Genre.valueOf(String.valueOf(Genre.fromString()));
+        this.genre = genre;
         this.musics = musics;
     }
 
