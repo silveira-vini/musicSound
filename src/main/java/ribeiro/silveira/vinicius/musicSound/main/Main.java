@@ -1,10 +1,19 @@
 package ribeiro.silveira.vinicius.musicSound.main;
 
+import ribeiro.silveira.vinicius.musicSound.models.Artist;
+import ribeiro.silveira.vinicius.musicSound.models.ArtistType;
+import ribeiro.silveira.vinicius.musicSound.repository.Repository;
+
 import java.util.Scanner;
 
 public class Main {
 
     private final Scanner input = new Scanner(System.in);
+    private final Repository repository;
+
+    public Main(Repository repository) {
+        this.repository = repository;
+    }
 
     public void showMenu() {
         var menu = """
@@ -54,18 +63,34 @@ public class Main {
         }
     }
 
-    private void searchDataArtist() {
-    }
+    private void registerArtist() {
 
-    private void findMusicFromArtist() {
-    }
+        System.out.println("Enter the Artist's name: ");
+        var artistName = input.nextLine();
+        System.out.println("Enter the Artist's genre: ");
+        var artistGenre = input.nextLine();
+        System.out.println("Typo 's' for Solo, 'd' for Duo or 'b' for Band:");
+        var artistType = ArtistType.fromString(input.nextLine());
 
-    private void listMusic() {
+        Artist artist = new Artist(artistName, artistGenre, artistType);
+        repository.save(artist);
+        System.out.println(artist);
+
     }
 
     private void registerMusic() {
     }
 
-    private void registerArtist() {
+    private void listMusic() {
     }
+
+    private void findMusicFromArtist() {
+    }
+
+    private void searchDataArtist() {
+    }
+
+
+
+
 }
