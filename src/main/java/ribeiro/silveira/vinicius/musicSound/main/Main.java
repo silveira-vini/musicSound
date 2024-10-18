@@ -2,6 +2,7 @@ package ribeiro.silveira.vinicius.musicSound.main;
 
 import ribeiro.silveira.vinicius.musicSound.models.Artist;
 import ribeiro.silveira.vinicius.musicSound.models.ArtistType;
+import ribeiro.silveira.vinicius.musicSound.models.Music;
 import ribeiro.silveira.vinicius.musicSound.repository.Repository;
 
 import java.util.Scanner;
@@ -79,6 +80,22 @@ public class Main {
     }
 
     private void registerMusic() {
+        System.out.println("Enter the Artist's name: ");
+        var artistName = input.nextLine();
+        System.out.println("Enter the Song's name: ");
+        var songName = input.nextLine();
+
+        Artist artist = repository.findByName(artistName);
+        if(artist == null) {
+            System.out.println("Artist not found!");
+            return;
+        }
+
+        Music music = new Music(songName, artist);
+        artist.getMusics().add(music);
+        repository.save(artist);
+        System.out.println("Music registered successfully!!");
+
     }
 
     private void listMusic() {
@@ -89,8 +106,5 @@ public class Main {
 
     private void searchDataArtist() {
     }
-
-
-
 
 }
