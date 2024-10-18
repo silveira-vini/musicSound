@@ -5,6 +5,7 @@ import ribeiro.silveira.vinicius.musicSound.models.ArtistType;
 import ribeiro.silveira.vinicius.musicSound.models.Music;
 import ribeiro.silveira.vinicius.musicSound.repository.Repository;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -68,6 +69,12 @@ public class Main {
 
         System.out.println("Enter the Artist's name: ");
         var artistName = input.nextLine();
+        Artist existingArtist = repository.findByNameIgnoreCase(artistName);
+        if (existingArtist != null) {
+            System.out.println("\nArtist with this name already exists!");
+            return;
+        }
+
         System.out.println("Enter the Artist's genre: ");
         var artistGenre = input.nextLine();
         System.out.println("Typo 's' for Solo, 'd' for Duo or 'b' for Band:");
@@ -85,20 +92,37 @@ public class Main {
         System.out.println("Enter the Song's name: ");
         var songName = input.nextLine();
 
-        Artist artist = repository.findByName(artistName);
-        if(artist == null) {
-            System.out.println("Artist not found!");
-            return;
+        Artist artist = repository.findByNameIgnoreCase(artistName);
+
+        if (artist == null) {
+            System.out.println("Enter the Artist's genre: ");
+            var artistGenre = input.nextLine();
+            System.out.println("Typo 's' for Solo, 'd' for Duo or 'b' for Band:");
+            var artistType = ArtistType.fromString(input.nextLine());
+
+            artist = new Artist(artistName, artistGenre, artistType);
+            repository.save(artist);
+            System.out.println("\nArtist registered successfully!!");
         }
 
         Music music = new Music(songName, artist);
         artist.getMusics().add(music);
         repository.save(artist);
-        System.out.println("Music registered successfully!!");
+        System.out.println("\nMusic registered successfully!!");
 
     }
 
     private void listMusic() {
+
+        List<Artist> artists = repository.findAll();
+
+        if(artists.isEmpty()) {
+            System.out.println("No musics found!");
+        }
+
+        System.out.println("\n");
+        artists.forEach(a -> a.getMusics().forEach(m ->
+                System.out.println("Artist: " + m.getArtist().getName() + " - Music: " + m.getName())));
     }
 
     private void findMusicFromArtist() {
