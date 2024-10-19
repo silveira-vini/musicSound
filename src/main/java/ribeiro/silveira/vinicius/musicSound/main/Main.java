@@ -5,6 +5,7 @@ import ribeiro.silveira.vinicius.musicSound.models.ArtistType;
 import ribeiro.silveira.vinicius.musicSound.models.Music;
 import ribeiro.silveira.vinicius.musicSound.repository.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,7 +51,7 @@ public class Main {
                     listMusic();
                     break;
                 case 4:
-                    findMusicFromArtist();
+                    findMusicByArtist();
                     break;
                 case 5:
                     searchDataArtist();
@@ -82,7 +83,7 @@ public class Main {
 
         Artist artist = new Artist(artistName, artistGenre, artistType);
         repository.save(artist);
-        System.out.println(artist);
+        System.out.println(artist.getName() + " registered successfully");
 
     }
 
@@ -116,8 +117,9 @@ public class Main {
 
         List<Artist> artists = repository.findAll();
 
-        if(artists.isEmpty()) {
+        if (artists.isEmpty()) {
             System.out.println("No musics found!");
+            return;
         }
 
         System.out.println("\n");
@@ -125,10 +127,30 @@ public class Main {
                 System.out.println("Artist: " + m.getArtist().getName() + " - Music: " + m.getName())));
     }
 
-    private void findMusicFromArtist() {
+    private void findMusicByArtist() {
+        System.out.println("\nEnter the Artist's name: ");
+        var artistSearched = input.nextLine();
+        Artist artist = repository.findByNameIgnoreCase(artistSearched);
+
+        if (artist == null) {
+            System.out.println("\nNo artist found in data base with this name");
+            System.out.println("Do you want to register this artist? (Y/N)");
+            var answerYN = input.nextLine();
+            if (answerYN.equalsIgnoreCase("y")) {
+                registerArtist();
+                return;
+            } else if (answerYN.equalsIgnoreCase("n")) {
+                return;
+            } else {
+                System.out.println("Invalid answer");
+                return;
+            }
+        }
+        artist.getMusics().forEach(m -> System.out.println(" - " + m.getName()));
     }
 
     private void searchDataArtist() {
+
     }
 
 }
