@@ -4,8 +4,8 @@ import ribeiro.silveira.vinicius.musicSound.models.Artist;
 import ribeiro.silveira.vinicius.musicSound.models.ArtistType;
 import ribeiro.silveira.vinicius.musicSound.models.Music;
 import ribeiro.silveira.vinicius.musicSound.repository.Repository;
+import ribeiro.silveira.vinicius.musicSound.services.ChatGptSearch;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -150,6 +150,10 @@ public class Main {
     }
 
     private void searchDataArtist() {
+        System.out.println("Enter the name's artist that you want to know:");
+        var artist = input.nextLine();
+        var search = ChatGptSearch.getInformation(artist);
+        System.out.println(search.trim());
 
     }
 
