@@ -27,7 +27,7 @@ public class Main {
                 2 - Register musics
                 3 - List musics
                 4 - Find musics from artists
-                5 - Search data from an artist
+                5 - Information from an artist
                 
                 0 - Exit
                 """;
